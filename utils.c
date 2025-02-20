@@ -6,11 +6,32 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:48:34 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/18 16:35:39 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:41:25 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	get_time(void)
+{
+	struct timeval	tv;
+	int				time;
+	
+	if (gettimeofday(&tv, NULL) == -1)
+		return (-1);
+	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (time);
+}
+
+int	ft_usleep(int time)
+{
+	int	start;
+	
+	start = get_time();
+	while ((get_time() - start) < time)
+		usleep(time / 10);
+	return (0);
+}
 
 size_t	ft_strlen(const char *s)
 {
@@ -34,4 +55,11 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		i++;
 	}
 	return (0);
+}
+
+void	ft_debug(void)
+{
+	printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
+	printf("|                 DUPA                  |\n");
+	printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
 }
