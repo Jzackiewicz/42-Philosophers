@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:46:00 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/20 16:47:09 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:23:08 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,34 @@ void	thinking(t_philo_data *philo_data)
 		- philo_data->data_storage->times.start_time, philo_data->id);
 }
 
-int	eating(t_philo_data *philo_data)
+static void	take_fork(pthread_mutex_t *fork, t_philo_data *philo_data)
 {
+	pthread_mutex_lock(fork);
+	printf("%ld %d has taken a fork\n", get_time()
+	- philo_data->data_storage->times.start_time, philo_data->id);
+}
+
+void	eating(t_philo_data *philo_data)
+{
+	take_fork(philo_data->l_fork, philo_data);
+	take_fork(philo_data->r_fork, philo_data);
 	printf("%ld %d is eating\n", get_time()
+	- philo_data->data_storage->times.start_time, philo_data->id);
+	ft_usleep(philo_data->data_storage->times.time2eat);
+	philo_data->last_meal_timestamp = get_time();
+	pthread_mutex_unlock(philo_data->l_fork);
+	pthread_mutex_unlock(philo_data->r_fork);
+}
+
+void	sleeping(t_philo_data *philo_data)
+{
+	printf("%ld %d is sleeping\n", get_time()
 		- philo_data->data_storage->times.start_time, philo_data->id);
-	
-	if (!philo_data->r_fork->is_locked && !philo_data->l_fork->is_locked)
-	{
-		philo_data->r_fork->is_locked = true;
-		philo_data->l_fork->is_locked = true;
-		ft_usleep(philo_data->data_storage->times.time2die);
-	}
-	else
-		return (0);
-	
-	return (1);
+	ft_usleep(philo_data->data_storage->times.time2sleep);
+}
+
+void	dying(t_philo_data *philo_data)
+{
+	printf("%ld %d died\n", get_time()
+		- philo_data->data_storage->times.start_time, philo_data->id);
 }

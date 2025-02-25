@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 NAME = philo
 
-SRCS = error_handling.c parsing.c main.c utils.c handle_routine.c philo_actions.c
+SRCS = error_handling.c parsing.c main.c utils.c handle_routine.c philo_actions.c monitor.c
 
 OBJ_DIR = obj
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

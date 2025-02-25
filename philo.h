@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 08:41:03 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/20 14:50:57 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:22:45 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,27 @@ typedef struct s_philo_data
 {
 	pthread_t				philo;
 	int						id;
-	struct s_fork_data		*r_fork;
-	struct s_fork_data		*l_fork;
+	pthread_mutex_t			*r_fork;
+	pthread_mutex_t			*l_fork;
+	long int				last_meal_timestamp;
 	struct s_data_storage	*data_storage;
+	int						meals_num;
 }							t_philo_data;
 
-typedef struct s_fork_data
+typedef struct s_monitor_data
 {
-	pthread_mutex_t			fork;
-	bool					is_locked;
-}							t_fork_data;
+	pthread_t				monitor;
+	pthread_mutex_t			monitor_mutex;
+}							t_monitor_data;
 
 typedef struct s_data_storage
 {
 	t_philo_data			*philos;
-	t_fork_data				*forks;
+	pthread_mutex_t			*forks;
+	t_monitor_data			*monitor_data;
 	t_set_times				times;
+	bool					death;
+	bool					all_ate;
 }							t_data_storage;
 
 //							utils
@@ -70,7 +75,11 @@ int							load_input(int argc, char **argv,
 
 //							philo_actions
 void						thinking(t_philo_data *philo_data);
-int							eating(t_philo_data *philo_data);
-
+void						eating(t_philo_data *philo_data);
+void						sleeping(t_philo_data *philo_data);
+void						dying(t_philo_data *philo_data);
 int							start_threads(t_data_storage *data);
+
+//							monitor
+int							start_monitor(t_data_storage *data);
 #endif
