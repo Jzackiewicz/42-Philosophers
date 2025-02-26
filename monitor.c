@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:30:25 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/25 16:55:44 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/25 23:53:43 by kubaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	*routine(void *arg)
 				data->death = true;
 				dying(&data->philos[i]);
 				pthread_mutex_unlock(&data->monitor_data->monitor_mutex);
-				break ;
+				return (NULL) ;
 			}
 			i++;
 		}

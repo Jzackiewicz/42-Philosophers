@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 13:46:00 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/25 15:23:08 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/26 01:01:23 by kubaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	thinking(t_philo_data *philo_data)
 
 static void	take_fork(pthread_mutex_t *fork, t_philo_data *philo_data)
 {
+	if (philo_data->data_storage->all_ate)
+		return ;
 	pthread_mutex_lock(fork);
 	printf("%ld %d has taken a fork\n", get_time()
 	- philo_data->data_storage->times.start_time, philo_data->id);

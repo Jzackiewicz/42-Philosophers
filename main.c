@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 08:40:56 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/25 16:45:18 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/25 23:42:23 by kubaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ int	main(int argc, char **argv)
 	if (start_monitor(&data_storage) == -1)
 		return (-1);
 	start_threads(&data_storage);
+	cleanup(&data_storage);
 	return (1);
 }
