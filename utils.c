@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:48:34 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/26 15:34:23 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:15:27 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,4 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		i++;
 	}
 	return (0);
-}
-
-void	ft_debug(void)
-{
-	printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
-	printf("|                 DUPA                  |\n");
-	printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
-}
-
-int	check_status(t_data_storage *data)
-{
-	pthread_mutex_lock(&data->monitor_data->monitor_mutex);
-	if (data->death)
-	{
-		pthread_mutex_unlock(&data->monitor_data->monitor_mutex);
-		return (-1);
-	}
-	pthread_mutex_unlock(&data->monitor_data->monitor_mutex);
-	return (1);
 }

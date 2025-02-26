@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 08:41:03 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/26 15:34:41 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:19:17 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_data_storage
 	t_monitor_data			*monitor_data;
 	t_set_times				times;
 	bool					death;
-	bool					all_ate;
+	int						philos_fed;
 }							t_data_storage;
 
 //							utils

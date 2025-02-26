@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:30:25 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/25 23:53:43 by kubaz            ###   ########.fr       */
+/*   Updated: 2025/02/26 16:48:36 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	*routine(void *arg)
 {
 	t_data_storage	*data;
 	int				i;
-	
+
 	data = (t_data_storage *)arg;
 	while (!data->death)
 	{
@@ -24,13 +24,20 @@ static void	*routine(void *arg)
 		i = 0;
 		while (i < data->times.philos_num)
 		{
-			if (get_time() - data->philos[i].last_meal_timestamp >
-				data->times.time2die)
+			if (get_time()
+				- data->philos[i].last_meal_timestamp > data->times.time2die)
 			{
 				data->death = true;
 				dying(&data->philos[i]);
 				pthread_mutex_unlock(&data->monitor_data->monitor_mutex);
-				return (NULL) ;
+				return (NULL);
+			}
+			if (data->philos[i].meals_num >= data->times.num_of_iter
+				&& data->times.num_of_iter != -1)
+			{
+				data->philos_fed++;
+				pthread_mutex_unlock(&data->monitor_data->monitor_mutex);
+				return (NULL);
 			}
 			i++;
 		}
@@ -50,5 +57,17 @@ int	start_monitor(t_data_storage *data)
 	if (pthread_create(&data->monitor_data->monitor, NULL, routine, data) != 0)
 		return (-1);
 	pthread_detach(data->monitor_data->monitor);
+	return (1);
+}
+
+int	check_status(t_data_storage *data)
+{
+	pthread_mutex_lock(&data->monitor_data->monitor_mutex);
+	if (data->death || data->philos_fed >= data->times.philos_num)
+	{
+		pthread_mutex_unlock(&data->monitor_data->monitor_mutex);
+		return (-1);
+	}
+	pthread_mutex_unlock(&data->monitor_data->monitor_mutex);
 	return (1);
 }

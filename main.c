@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 08:40:56 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/25 23:42:23 by kubaz            ###   ########.fr       */
+/*   Updated: 2025/02/26 17:16:00 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,25 @@ void	cleanup(t_data_storage *data)
 {
 	int	i;
 
+	if (!data)
+		return ;
 	i = 0;
-	while (i < data->times.philos_num)
+	if (data->forks)
 	{
-		pthread_mutex_destroy(&data->forks[i]);
-		i++;
+		while (i < data->times.philos_num)
+		{
+			pthread_mutex_destroy(&data->forks[i]);
+			i++;
+		}
 	}
-	pthread_mutex_destroy(&data->monitor_data->monitor_mutex);
-	free(data->monitor_data);
-	free(data->philos);
 	free(data->forks);
+	if (data->monitor_data)
+	{
+		pthread_mutex_destroy(&data->monitor_data->monitor_mutex);
+		free(data->monitor_data);
+	}
+	free(data->philos);
+	data->philos = NULL;
 }
 
 int	init_philos(t_data_storage *data)
@@ -40,7 +49,7 @@ int	init_philos(t_data_storage *data)
 		return (-1);
 	i = 0;
 	data->death = false;
-	data->all_ate = false;
+	data->philos_fed = 0;
 	while (i < data->times.philos_num)
 	{
 		data->philos[i].id = i;
@@ -69,7 +78,8 @@ int	main(int argc, char **argv)
 		return (-1);
 	if (start_monitor(&data_storage) == -1)
 		return (-1);
-	start_threads(&data_storage);
+	if (start_threads(&data_storage) == -1)
+		return (-1);
 	cleanup(&data_storage);
 	return (1);
 }

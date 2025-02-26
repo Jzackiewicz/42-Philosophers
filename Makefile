@@ -1,16 +1,16 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread # -pthread
 
 NAME = philo
 
-SRCS = error_handling.c parsing.c main.c utils.c handle_routine.c philo_actions.c monitor.c
+SRCS = error_handling.c parsing.c main.c utils.c handle_routine.c philo_actions.c monitor.c eating.c
 
 OBJ_DIR = obj
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lreadline
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
