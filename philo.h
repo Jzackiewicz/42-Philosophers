@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 08:41:03 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/25 15:22:45 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/26 15:34:41 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int							ft_strncmp(const char *s1, const char *s2,
 long int					get_time(void);
 int							ft_usleep(long int time);
 void						ft_debug(void);
+int							check_status(t_data_storage *data);
 
 //							error_handling
 int							input_check(int argc, char **argv);
