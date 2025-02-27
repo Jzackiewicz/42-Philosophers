@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 08:41:03 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/26 16:19:17 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:39:50 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_monitor_data
 {
 	pthread_t				monitor;
 	pthread_mutex_t			monitor_mutex;
+	pthread_mutex_t			write_mutex;
 }							t_monitor_data;
 
 typedef struct s_data_storage
@@ -54,8 +55,7 @@ typedef struct s_data_storage
 	pthread_mutex_t			*forks;
 	t_monitor_data			*monitor_data;
 	t_set_times				times;
-	bool					death;
-	int						philos_fed;
+	bool					end_flag;
 }							t_data_storage;
 
 //							utils

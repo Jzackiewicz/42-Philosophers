@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 08:40:56 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/26 17:16:00 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:23:03 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,19 @@ void	cleanup(t_data_storage *data)
 			pthread_mutex_destroy(&data->forks[i]);
 			i++;
 		}
+		free(data->forks);
 	}
-	free(data->forks);
 	if (data->monitor_data)
 	{
+		pthread_mutex_lock(&data->monitor_data->monitor_mutex);
+		pthread_mutex_unlock(&data->monitor_data->monitor_mutex);
 		pthread_mutex_destroy(&data->monitor_data->monitor_mutex);
+		pthread_mutex_lock(&data->monitor_data->write_mutex);
+		pthread_mutex_unlock(&data->monitor_data->write_mutex);
+		pthread_mutex_destroy(&data->monitor_data->write_mutex);
 		free(data->monitor_data);
 	}
 	free(data->philos);
-	data->philos = NULL;
 }
 
 int	init_philos(t_data_storage *data)
@@ -48,8 +52,7 @@ int	init_philos(t_data_storage *data)
 	if (!data->philos || !data->forks)
 		return (-1);
 	i = 0;
-	data->death = false;
-	data->philos_fed = 0;
+	data->end_flag = false;
 	while (i < data->times.philos_num)
 	{
 		data->philos[i].id = i;
@@ -71,15 +74,15 @@ int	main(int argc, char **argv)
 	t_data_storage	data_storage;
 
 	if (input_check(argc, argv) == -1)
-		return (-1);
+		return (cleanup(&data_storage), -1);
 	if (load_input(argc, argv, &(data_storage.times)) == -1)
-		return (-1);
+		return (cleanup(&data_storage), -1);
 	if (init_philos(&data_storage) == -1)
-		return (-1);
+		return (cleanup(&data_storage), -1);
 	if (start_monitor(&data_storage) == -1)
-		return (-1);
+		return (cleanup(&data_storage), -1);
 	if (start_threads(&data_storage) == -1)
-		return (-1);
+		return (cleanup(&data_storage), -1);
 	cleanup(&data_storage);
 	return (1);
 }
